@@ -11,6 +11,7 @@ import WatchLater from './components/WatchLater'
 import YouTubePlayer from './components/YoutubePlayer'
 import Modal from './components/Modal'
 import './app.scss'
+import useInfiniteScroll from './hooks/useInfiniteScroll'
 
 const App = () => {
 
@@ -21,20 +22,23 @@ const App = () => {
   const searchQuery = searchParams.get('search')
   const [videoKey, setVideoKey] = useState()
   const [isOpen, setOpen] = useState(false)
+  const [page, setPage] = useState(1);
+
   const navigate = useNavigate()
   
   const closeModal = () => setOpen(false)
   
-  const closeCard = () => {
 
-  }
+  
+
+ 
 
   const getSearchResults = (query) => {
     if (query !== '') {
-      dispatch(fetchMovies(`${ENDPOINT_SEARCH}&query=`+query))
+      dispatch(fetchMovies(`${ENDPOINT_SEARCH}&query=${query}&page=${page}`))
       setSearchParams(createSearchParams({ search: query }))
     } else {
-      dispatch(fetchMovies(ENDPOINT_DISCOVER))
+      dispatch(fetchMovies(`${ENDPOINT_DISCOVER}&page=${page}`))
       setSearchParams()
     }
   }
@@ -44,11 +48,15 @@ const App = () => {
     getSearchResults(query)
   }
 
+  const loadMoreMovies = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
+
   const getMovies = () => {
     if (searchQuery) {
-        dispatch(fetchMovies(`${ENDPOINT_SEARCH}&query=`+searchQuery))
+        dispatch(fetchMovies(`${ENDPOINT_SEARCH}&query=${searchQuery}&page=${page}`))
     } else {
-        dispatch(fetchMovies(ENDPOINT_DISCOVER))
+        dispatch(fetchMovies(`${ENDPOINT_DISCOVER}&page=${page}`))
     }
   }
 
@@ -73,7 +81,15 @@ const App = () => {
 
   useEffect(() => {
     getMovies()
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    if (page > 1) {
+      getMovies(page);
+    }
+  }, [page]);
+
+  useInfiniteScroll(loadMoreMovies);
 
   return (
     <div className="App">
