@@ -14,7 +14,8 @@ const moviesSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(fetchMovies.fulfilled, (state, action) => {
-            const urlParams = new URLSearchParams(action.meta.arg);
+            const arg = action.meta?.arg || "";
+            const urlParams = new URLSearchParams(arg);
             const page = Number(urlParams.get('page'));
             if (page > 1) {
                 state.movies.results = [...state.movies.results, ...action.payload.results]

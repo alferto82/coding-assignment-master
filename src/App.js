@@ -48,7 +48,7 @@ const App = () => {
       dispatch(fetchMovies(`${ENDPOINT_DISCOVER}&page=1`));
       setSearchParams();
     }
-    setPage(1); // Reset page number when performing a new search
+    setPage(1); 
   };
 
   const searchMovies = (query) => {
@@ -79,6 +79,7 @@ const App = () => {
 
   return (
     <div className="App">
+      <div id="modal-root"></div>
       <Header searchMovies={searchMovies} searchParams={searchParams} setSearchParams={setSearchParams} />
 
       <div className="container">

@@ -14,7 +14,8 @@ it('movies starred and saved to watch later', async () => {
     await waitFor(() => {
         expect(starMovieLink).toBeInTheDocument()
     })
-    await userEvent.click(starMovieLink)
+    await userEvent.click(starMovieLink);
+    
     await waitFor(() => {
       expect(screen.getByTestId('star-fill')).toBeInTheDocument()
     })
@@ -26,7 +27,7 @@ it('movies starred and saved to watch later', async () => {
     await waitFor(() => {
         expect(watchLaterLink).toBeInTheDocument()
     })
-    await userEvent.click(watchLaterLink)
+    await userEvent.click(watchLaterLink);
     await waitFor(() => {
       expect(screen.getByTestId('remove-watch-later')).toBeInTheDocument()
     })
