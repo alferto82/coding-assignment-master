@@ -7,19 +7,31 @@ describe('MovieSlice test', () => {
         const action = {type: fetchMovies.pending};
         const initialState = moviesSlice.reducer(
         { 
-            movies: [], fetchStatus: '',
+            movies: {results: [], page: 1}, fetchStatus: '',
         }, action);
         expect(action).toEqual({type: fetchMovies.pending})
      })
 
-    it('should return payload when action is fulfilled', () => {
+     it('should return payload when action is fulfilled', () => {
         const action = {
             type: fetchMovies.fulfilled, 
             payload: moviesMock
         };
         const initialState = moviesSlice.reducer(
         { 
-            movies: [], fetchStatus: '',
+            movies: {results: [], page: 1}, fetchStatus: '',
+        }, action);
+        expect(action.payload).toBeTruthy()
+    })
+
+    it('should return payload when action is fulfilled with page > 1', () => {
+        const action = {
+            type: fetchMovies.fulfilled, 
+            payload: moviesMock
+        };
+        const initialState = moviesSlice.reducer(
+        { 
+            movies: {results: [], page: 22}, fetchStatus: '',
         }, action);
         expect(action.payload).toBeTruthy()
     })
@@ -28,7 +40,7 @@ describe('MovieSlice test', () => {
         const action = {type: fetchMovies.rejected};
         const initialState = moviesSlice.reducer(
         { 
-            movies: [], fetchStatus: '',
+            movies: {results: [], page: 1}, fetchStatus: '',
         }, action);
         expect(action).toEqual({type: fetchMovies.rejected})
      })
